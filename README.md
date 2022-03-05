@@ -1,4 +1,9 @@
-# Basic Sample Hardhat Project
+# NFT-Game
+
+Small project base on the tutorial from https://buildspace.so/
+Purpose is to understand more how to build a NFT browser games
+
+It's base on **Hardhat**
 
 This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
 
