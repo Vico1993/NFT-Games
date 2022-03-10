@@ -10,7 +10,11 @@ const main = async () => {
             "https://imgs.search.brave.com/e65tvAMphU_47bvnhSu-wtI95rMxJXC86wtmUBcL-PE/rs:fit:754:845:1/g:ce/aHR0cHM6Ly93d3cu/cG9rZXBlZGlhLmZy/L2ltYWdlcy8wLzA2/L01hZ2ljYXJwZS1S/RlZGLnBuZw",
         ],
         [100, 200, 300], // HP values
-        [100, 50, 25] // Attack damage values
+        [100, 50, 25], // Attack damage values
+        "Sacha", // Boss name
+        "https://imgs.search.brave.com/i8AOXaVM7WGSI9cbdlia-79IdXzyz4hUL0PEIn-zu30/rs:fit:1180:858:1/g:ce/aHR0cDovL25vZW1p/ZTA4Lm4uby5waWMu/Y2VudGVyYmxvZy5u/ZXQvby9iMzYzMzQy/MC5wbmc", // Boss image
+        10000, // Boss hp
+        50 // Boss attack damage
     );
 
     await gameContract.deployed();
