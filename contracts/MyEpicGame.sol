@@ -54,6 +54,9 @@ contract MyEpicGame is ERC721 {
     // to store the owner of the NFT and reference it later.
     mapping(address => uint256) public nftHolders;
 
+    event CharacterNFTMinted(address sender, uint256 tokenId, uint256 characterIndex);
+    event AttackComplete(uint newBossHp, uint newPlayerHp);
+
     // Data passed in to the contract when it's first created initializing the characters.
     // We're going to actually pass these values in from run.js.
     constructor(
@@ -128,6 +131,8 @@ contract MyEpicGame is ERC721 {
 
         // Increment the tokenId for the next person that uses it.
         _tokenIds.increment();
+
+        emit CharacterNFTMinted(msg.sender, newItemId, _characterIndex);
     }
 
     function attackBoss() public {
@@ -139,16 +144,16 @@ contract MyEpicGame is ERC721 {
         console.log("Boss %s has %s HP and %s AD", bigBoss.name, bigBoss.hp, bigBoss.attackDamage);
 
         // Make sure the player has more than 0 HP.
-        require (
-            player.hp > 0,
-            "Error: character must have HP to attack boss."
-        );
+        // require (
+        //     player.hp > 0,
+        //     "Error: character must have HP to attack boss."
+        // );
 
-        // Make sure the boss has more than 0 HP.
-        require (
-            bigBoss.hp > 0,
-            "Error: boss must have HP to attack boss."
-        );
+        // // Make sure the boss has more than 0 HP.
+        // require (
+        //     bigBoss.hp > 0,
+        //     "Error: boss must have HP to attack boss."
+        // );
 
         // Allow player to attack boss.
         bigBoss.hp = bigBoss.hp < player.attackDamage ? 0 : bigBoss.hp - player.attackDamage;
@@ -160,6 +165,7 @@ contract MyEpicGame is ERC721 {
         console.log("Player attacked boss. New boss hp: %s", bigBoss.hp);
         console.log("Boss attacked player. New player hp: %s\n", player.hp);
 
+        emit AttackComplete(bigBoss.hp, player.hp);
     }
 
     function tokenURI(uint256 _tokenId) public view override returns (string memory) {
@@ -187,5 +193,26 @@ contract MyEpicGame is ERC721 {
         );
 
         return output;
+    }
+
+    function getAllDefaultCharacters() public view returns (CharacterAttributes[] memory) {
+        return defaultCharacters;
+    }
+
+    function getBigBoss() public view returns (BigBoss memory) {
+       return bigBoss;
+    }
+
+    function checkIfUserHasNFT() public view returns (CharacterAttributes memory) {
+        // Get the tokenId of the user's character NFT
+        uint256 userNftTokenId = nftHolders[msg.sender];
+
+        // If the user has a tokenId in the map, return their character.
+        if (userNftTokenId > 0) {
+            return nftHolderAttributes[userNftTokenId];
+        } else {
+            CharacterAttributes memory emptyStruct;
+            return emptyStruct;
+        }
     }
 }
